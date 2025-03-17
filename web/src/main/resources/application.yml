@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: sky-take-out
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sky_take_out
+    username: root
+    password: root
+
+sky:
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    admin-secret-key: qwertyuiopasdfghjklzxcvbnmqwertyuiopasdfghjkl
+    # 设置jwt过期时间
+    admin-ttl: 7200000
+    # 设置前端传递过来的令牌名称
+    admin-token-name: token
+
+aliyun:
+  oss:
+    endpoint: https://oss-cn-beijing.aliyuncs.com
+    region: cn-beijing
+    bucketName: springboot-lim
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: 'com.lim'
+      paths-to-match: '/**'
+      packages-to-scan: com.lim.controller
