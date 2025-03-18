@@ -22,15 +22,7 @@ aliyun:
     region: cn-beijing
     bucketName: springboot-lim
 
-# springdoc-openapi项目配置
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
-  group-configs:
-    - group: 'com.lim'
-      paths-to-match: '/**'
-      packages-to-scan: com.lim.controller
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -1,24 +1,35 @@
 package com.lim.Service.impl;
 
-import com.lim.EmpService;
+import com.github.pagehelper.Page;
+import com.lim.Service.EmpService;
 import com.lim.constant.MessageConstant;
+import com.lim.constant.PasswordConstant;
 import com.lim.constant.StatusConstant;
+import com.lim.context.BaseContext;
+import com.lim.dto.EmployeeDTO;
 import com.lim.dto.EmployeeLoginDTO;
+import com.lim.dto.EmployeePageQueryDTO;
 import com.lim.entity.Employee;
 import com.lim.exception.AccountLockedException;
 import com.lim.exception.AccountNotFoundException;
 import com.lim.exception.PasswordErrorException;
 import com.lim.mapper.EmployeeMapper;
+import com.lim.result.PageResult;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import com.github.pagehelper.PageHelper;
+
+import java.time.LocalDateTime;
 
 @Slf4j
 @Service
 public class EmpServiceImpl implements EmpService {
     @Autowired
     private EmployeeMapper employeeMapper;
+
     @Override
     public Employee login(EmployeeLoginDTO employeeLoginDTO) throws AccountNotFoundException {
         String username = employeeLoginDTO.getUsername();
@@ -48,5 +59,61 @@ public class EmpServiceImpl implements EmpService {
 
         //3、返回实体对象
         return employee;
+    }
+
+    @Override
+    public void save(EmployeeDTO employeeDTO) {
+        //在ThreadLocal中取出登录用户的id
+        Long userId = BaseContext.getCurrentId();
+        Employee employee = Employee.builder()
+                .password(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()))
+                .status(StatusConstant.ENABLE)
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .createUser(userId)
+                .updateUser(userId)
+                .build();
+
+        BeanUtils.copyProperties(employeeDTO, employee);
+        /*employee.setPassword();
+        employee.setStatus();
+        employee.setCreateTime();
+        employee.setUsername();*/
+
+        employeeMapper.save(employee);
+    }
+
+    @Override
+    public PageResult<Employee> pagingQuery(EmployeePageQueryDTO employeePageQueryDTO) {
+        PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
+
+        Page<Employee> queryResult = (Page<Employee>) employeeMapper.pagingQuery(employeePageQueryDTO.getName());
+
+        return new PageResult<>(queryResult.getTotal(),queryResult.getResult());
+
+    }
+
+    @Override
+    public void updateEmpStatus(Integer status, Long id) {
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+         employeeMapper.updateEmp(employee);
+    }
+
+    @Override
+    public Employee selectEmp(Long id) {
+        return employeeMapper.selectEmpById(id);
+    }
+
+    @Override
+    public void updateEmp(EmployeeDTO employeeDTO) {
+        Employee employee = Employee.builder()
+                .updateTime(LocalDateTime.now())
+                .updateUser(BaseContext.getCurrentId())
+                .build();
+        BeanUtils.copyProperties(employeeDTO,employee);
+        employeeMapper.updateEmp(employee);
     }
 }
