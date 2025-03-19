@@ -1,6 +1,7 @@
 package com.lim.handler;
 
 import com.lim.exception.BaseException;
+import com.lim.exception.DeletionNotAllowedException;
 import com.lim.result.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +38,11 @@ public class GlobalExceptionHandler {
             return Result.error(e.getMessage().split(" ")[2] + "已存在");
         }
         return Result.error("未知错误");
+    }
+
+    @ExceptionHandler(DeletionNotAllowedException.class)
+    public Result handleDeletionNotAllowedException(DeletionNotAllowedException e){
+        return Result.error(e.getMessage());
     }
 
 }

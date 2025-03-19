@@ -3,22 +3,28 @@ package com.lim.Service.impl;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.lim.Service.CategoryService;
-import com.lim.context.BaseContext;
 import com.lim.dto.CategoryDTO;
 import com.lim.dto.CategoryPageQueryDTO;
 import com.lim.entity.Category;
+import com.lim.exception.DeletionNotAllowedException;
 import com.lim.mapper.CategoryMapper;
+import com.lim.mapper.DishMapper;
+import com.lim.mapper.SetMealMapper;
 import com.lim.result.PageResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
+@Slf4j
 @Service
 public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private DishMapper dishMapper;
+    @Autowired
+    private SetMealMapper setMealMapper;
 
     @Override
     public PageResult<Category> pagingQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
@@ -33,11 +39,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void updateCategory(CategoryDTO categoryDTO) {
-        Category category = Category.builder()
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
-                .build();
-
+        Category category = new Category();
         BeanUtils.copyProperties(categoryDTO, category);
 
         categoryMapper.updateCategory(category);
@@ -48,8 +50,6 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = Category.builder()
                 .status(status)
                 .id(id)
-                .updateUser(BaseContext.getCurrentId())
-                .updateTime(LocalDateTime.now())
                 .build();
 
         categoryMapper.updateCategory(category);
@@ -57,16 +57,26 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void saveCategory(CategoryDTO categoryDTO) {
-        Category category = Category.builder()
-                .status(0)
-                .createTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
-                .createUser(BaseContext.getCurrentId())
-                .updateUser(BaseContext.getCurrentId())
-                .build();
-
+        Category category = new Category();
+        category.setStatus(0);
         BeanUtils.copyProperties(categoryDTO,category);
 
         categoryMapper.insertCategory(category);
+    }
+
+    @Override
+    public void deleteCategory(Long id) {
+        if(dishMapper.selectDishByCategoryId(id) != null){
+            throw new DeletionNotAllowedException("该分类还有菜品使用，暂时不能删除~~");
+        }
+        if (setMealMapper.selectSetMealByCategoryId(id) != null){
+            throw new DeletionNotAllowedException("该分类还有套餐使用，暂时不能删除~~");
+        }
+        categoryMapper.deleteCategoryById(id);
+    }
+
+    @Override
+    public void selectCategory(Integer type) {
+        categoryMapper.selectCategoryByType(type);
     }
 }

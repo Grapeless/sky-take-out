@@ -68,17 +68,9 @@ public class EmpServiceImpl implements EmpService {
         Employee employee = Employee.builder()
                 .password(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()))
                 .status(StatusConstant.ENABLE)
-                .createTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
-                .createUser(userId)
-                .updateUser(userId)
                 .build();
 
         BeanUtils.copyProperties(employeeDTO, employee);
-        /*employee.setPassword();
-        employee.setStatus();
-        employee.setCreateTime();
-        employee.setUsername();*/
 
         employeeMapper.save(employee);
     }
@@ -109,11 +101,9 @@ public class EmpServiceImpl implements EmpService {
 
     @Override
     public void updateEmp(EmployeeDTO employeeDTO) {
-        Employee employee = Employee.builder()
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
-                .build();
+        Employee employee = new Employee();
         BeanUtils.copyProperties(employeeDTO,employee);
+
         employeeMapper.updateEmp(employee);
     }
 }

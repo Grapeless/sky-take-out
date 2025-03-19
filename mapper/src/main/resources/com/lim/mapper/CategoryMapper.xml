@@ -7,10 +7,9 @@
         <where>
             <if test="name != null">
                 name like concat('%', #{name}, '%')
-                  and
             </if>
             <if test="type != null">
-                type = #{type}
+                and type = #{type}
             </if>
         </where>
         order by sort

@@ -38,4 +38,16 @@ public class CategoryController {
         categoryService.saveCategory(categoryDTO);
         return Result.success("添加成功");
     }
+
+    @DeleteMapping()
+    public Result delete(Long id){
+        categoryService.deleteCategory(id);
+        return Result.success("删除成功");
+    }
+
+    @GetMapping("/list")
+    public Result selectEmp(Integer type){
+        categoryService.selectCategory(type);
+        return Result.success();
+    }
 }
