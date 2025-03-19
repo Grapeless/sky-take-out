@@ -9,6 +9,8 @@ import com.lim.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/admin/category")
 public class CategoryController {
@@ -47,7 +49,7 @@ public class CategoryController {
 
     @GetMapping("/list")
     public Result selectEmp(Integer type){
-        categoryService.selectCategory(type);
-        return Result.success();
+        List<Category> categories = categoryService.selectCategory(type);
+        return Result.success(categories);
     }
 }

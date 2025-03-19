@@ -16,6 +16,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -76,7 +78,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void selectCategory(Integer type) {
-        categoryMapper.selectCategoryByType(type);
+    public List<Category> selectCategory(Integer type) {
+        return categoryMapper.selectCategoryByType(type);
     }
 }

@@ -5,6 +5,8 @@ import com.lim.dto.CategoryPageQueryDTO;
 import com.lim.entity.Category;
 import com.lim.result.PageResult;
 
+import java.util.List;
+
 public interface CategoryService {
     PageResult<Category> pagingQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 
@@ -16,5 +18,5 @@ public interface CategoryService {
 
     void deleteCategory(Long id);
 
-    void selectCategory(Integer type);
+    List<Category> selectCategory(Integer type);
 }

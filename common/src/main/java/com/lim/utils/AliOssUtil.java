@@ -29,7 +29,7 @@ public class AliOssUtil {
             InputStream inputStream = file.getInputStream();
             // 避免文件覆盖
             String originalFilename = file.getOriginalFilename();
-            String fileName = UUID.randomUUID().toString() + originalFilename.substring(originalFilename.lastIndexOf("."));
+            String fileName = UUID.randomUUID() + originalFilename.substring(originalFilename.lastIndexOf("."));
 
             //获取配置参数
             String endpoint = aliOSSProperties.getEndpoint();
