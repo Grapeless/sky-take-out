@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lim.mapper.SetMealMapper">
+
+    <select id="pagingQuery" resultType="com.lim.vo.SetmealVO">
+        select setmeal.*, c.name as categoryName
+        from setmeal
+                 left join category c
+                           on setmeal.category_id = c.id
+        <where>
+            <if test="name != null and name != ''">
+                setmeal.name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and setmeal.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and setmeal.status = #{status}
+            </if>
+        </where>
+    </select>
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into setmeal(status,category_id, name, price, description, image, create_time, update_time, create_user, update_user) VALUES
+            (#{status},#{categoryId},#{name},#{price},#{description},#{image},#{createTime},#{updateTime},#{createUser},#{updateUser})
+    </insert>
+
+    <select id="selectSetMealVOById" resultType="com.lim.vo.SetmealVO">
+        select setmeal.*, c.name as categoryName
+        from setmeal
+                 left join category c on setmeal.category_id = c.id
+        where setmeal.id = #{id}
+    </select>
+
+    <update id="updateSetMeal">
+        update setmeal
+        <set>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="description != null ">
+                description = #{description},
+            </if>
+            <if test="image != null ">
+                image = #{image}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectSetMealByIds" resultType="com.lim.entity.Setmeal">
+        select * from setmeal
+        <where>
+            id in
+            <foreach collection="ids" item="id" separator="," close=")" open="(">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+    <delete id="deleteSetMealBySetMealIds">
+        delete from setmeal
+        <where>
+            id in
+            <foreach collection="setMealIds" item="setMealId" open="(" close=")" separator=",">
+                #{setMealId}
+            </foreach>
+        </where>
+    </delete>
+</mapper>

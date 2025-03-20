@@ -68,7 +68,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long id) {
-        if(dishMapper.selectDishByCategoryId(id) != null){
+        if(!dishMapper.selectDishByCategoryId(id).isEmpty()){
             throw new DeletionNotAllowedException("该分类还有菜品使用，暂时不能删除~~");
         }
         if (setMealMapper.selectSetMealByCategoryId(id) != null){

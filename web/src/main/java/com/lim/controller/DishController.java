@@ -3,11 +3,14 @@ package com.lim.controller;
 import com.lim.Service.DishService;
 import com.lim.dto.DishDTO;
 import com.lim.dto.DishPageQueryDTO;
+import com.lim.entity.Dish;
 import com.lim.result.PageResult;
 import com.lim.result.Result;
 import com.lim.vo.DishVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -28,7 +31,7 @@ public class DishController {
     }
 
     @DeleteMapping()
-    public Result deleteDish(Long[] ids){
+    public Result deleteDish(@RequestParam List<Long> ids){
         dishService.deleteDish(ids);
         return Result.success();
     }
@@ -52,5 +55,9 @@ public class DishController {
         return Result.success();
     }
 
-
+    @GetMapping("/list")
+    public Result selectDishByCategoryId(Long categoryId){
+        List<Dish> dishes = dishService.selectDishByCategoryId(categoryId);
+        return Result.success(dishes);
+    }
 }

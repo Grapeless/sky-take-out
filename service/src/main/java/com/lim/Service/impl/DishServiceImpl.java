@@ -10,6 +10,7 @@ import com.lim.dto.DishPageQueryDTO;
 import com.lim.entity.Dish;
 import com.lim.entity.DishFlavor;
 import com.lim.exception.DeletionNotAllowedException;
+import com.lim.exception.DishEnableFailedException;
 import com.lim.mapper.DishFlavorMapper;
 import com.lim.mapper.DishMapper;
 import com.lim.mapper.SetMealDishMapper;
@@ -20,19 +21,18 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DishServiceImpl implements DishService {
     private final DishMapper dishMapper;
     private final DishFlavorMapper dishFlavorMapper;
-    private final SetMealMapper setMealMapper;
     private final SetMealDishMapper setMealDishMapper;
 
-    public DishServiceImpl(DishMapper dishMapper, DishFlavorMapper dishFlavorMapper, SetMealMapper setMealMapper, SetMealDishMapper setMealDishMapper) {
+    public DishServiceImpl(DishMapper dishMapper, DishFlavorMapper dishFlavorMapper, SetMealDishMapper setMealDishMapper) {
         this.dishMapper = dishMapper;
         this.dishFlavorMapper = dishFlavorMapper;
-        this.setMealMapper = setMealMapper;
         this.setMealDishMapper = setMealDishMapper;
     }
 
@@ -67,14 +67,14 @@ public class DishServiceImpl implements DishService {
 
     @Transactional
     @Override
-    public void deleteDish(Long[] ids) {
+    public void deleteDish(List<Long> ids) {
         for (Long id : ids) {
             //菜品若处于起售中，则无法删除
             if(dishMapper.selectDishById(id).getStatus().equals(StatusConstant.ENABLE)){
                 throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
             }
             //若还有套餐包含该菜品，则无法删除
-            if (setMealDishMapper.selectByDishId(id) != null){
+            if (!setMealDishMapper.selectByDishId(id).isEmpty()){
                 throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
             }
         }
@@ -84,6 +84,10 @@ public class DishServiceImpl implements DishService {
 
     @Override
     public void updateDishStatus(Integer status,Long id) {
+        //还有套餐售卖该菜品，则无法停售
+        /*if (!setMealDishMapper.selectByDishId(id).isEmpty()){
+            throw new DishEnableFailedException("还有套餐售卖该菜品，则无法停售");
+        }*/
         Dish dish = Dish.builder()
                 .status(status)
                 .id(id)
@@ -108,9 +112,19 @@ public class DishServiceImpl implements DishService {
         dishMapper.updateDishById(dish);
 
         //先删除全部口味
-        dishFlavorMapper.deleteDishFlavorByDishIds(new Long[]{dishDTO.getId()});
+        List<Long> ids = List.of(dishDTO.getId());
+        dishFlavorMapper.deleteDishFlavorByDishIds(ids);
 
         //再重新添加口味
+        Long dishId = dish.getId();
+        dishDTO.getFlavors().forEach(dishFlavor -> {
+            dishFlavor.setDishId(dishId);
+        });
         dishFlavorMapper.save(dishDTO.getFlavors());
+    }
+
+    @Override
+    public List<Dish> selectDishByCategoryId(Long categoryId) {
+        return dishMapper.selectDishByCategoryId(categoryId);
     }
 }
