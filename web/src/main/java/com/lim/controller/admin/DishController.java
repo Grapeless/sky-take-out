@@ -1,4 +1,4 @@
-package com.lim.controller;
+package com.lim.controller.admin;
 
 import com.lim.Service.DishService;
 import com.lim.dto.DishDTO;

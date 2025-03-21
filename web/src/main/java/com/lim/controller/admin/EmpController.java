@@ -1,4 +1,4 @@
-package com.lim.controller;
+package com.lim.controller.admin;
 
 import com.lim.Service.EmpService;
 import com.lim.constant.JwtClaimsConstant;

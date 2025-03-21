@@ -1,4 +1,4 @@
-package com.lim.controller;
+package com.lim.controller.admin;
 
 import com.lim.Service.CategoryService;
 import com.lim.dto.CategoryDTO;

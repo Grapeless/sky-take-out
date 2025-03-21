@@ -1,4 +1,4 @@
-package com.lim.controller;
+package com.lim.controller.admin;
 
 import com.lim.result.Result;
 import com.lim.utils.AliOssUtil;

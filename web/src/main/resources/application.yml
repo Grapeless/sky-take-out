@@ -6,6 +6,21 @@ spring:
     url: jdbc:mysql://localhost:3306/sky_take_out
     username: root
     password: root
+  data:
+    redis:
+      host: 118.178.136.134
+      port: 6379
+      password: 123456
+      lettuce:
+        pool:
+          enabled: true
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: 100ms
+
+
+
 
 sky:
   jwt:
