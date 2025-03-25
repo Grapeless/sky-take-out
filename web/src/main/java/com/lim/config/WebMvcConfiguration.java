@@ -1,6 +1,7 @@
 package com.lim.config;
 
 import com.lim.interceptor.JwtTokenAdminInterceptor;
+import com.lim.interceptor.JwtTokenUserInterceptor;
 import com.lim.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +23,11 @@ import java.util.List;
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     private final JwtTokenAdminInterceptor jwtTokenAdminInterceptor;
+    private final JwtTokenUserInterceptor jwtTokenUserInterceptor;
 
-    public WebMvcConfiguration(JwtTokenAdminInterceptor jwtTokenAdminInterceptor) {
+    public WebMvcConfiguration(JwtTokenAdminInterceptor jwtTokenAdminInterceptor, JwtTokenUserInterceptor jwtTokenUserInterceptor) {
         this.jwtTokenAdminInterceptor = jwtTokenAdminInterceptor;
+        this.jwtTokenUserInterceptor = jwtTokenUserInterceptor;
     }
 
     //拦截器
@@ -33,6 +36,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(jwtTokenAdminInterceptor)
                 .addPathPatterns("/admin/**")
                 .excludePathPatterns("/admin/employee/login");
+        registry.addInterceptor(jwtTokenUserInterceptor)
+                .addPathPatterns("/user/**")
+                .excludePathPatterns("/user/user/login")
+                .excludePathPatterns("/user/shop/status");
     }
 
     //消息转换器

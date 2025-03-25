@@ -29,9 +29,9 @@ public class HttpClientUtil {
 
     /**
      * 发送GET方式请求
-     * @param url
-     * @param paramMap
-     * @return
+     * @param url 请求路径
+     * @param paramMap 路径参数
+     * @return 响应体
      */
     public static String doGet(String url,Map<String,String> paramMap){
         // 创建Httpclient对象
@@ -75,9 +75,9 @@ public class HttpClientUtil {
 
     /**
      * 发送POST方式请求
-     * @param url
-     * @param paramMap
-     * @return
+     * @param url 请求路径
+     * @param paramMap 请求体参数
+     * @return 响应体
      * @throws IOException
      */
     public static String doPost(String url, Map<String, String> paramMap) throws IOException {

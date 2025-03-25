@@ -2,10 +2,7 @@ package com.lim.controller.user;
 
 import com.lim.Service.ShopService;
 import com.lim.result.Result;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user/shop")
@@ -16,9 +13,9 @@ public class UserShopController {
         this.shopService = shopService;
     }
 
-    @PutMapping("/{status}")
-    public Result updateShopStatus(@PathVariable Integer status){
-        shopService.updateShopStatus(status);
-        return Result.success();
+    @GetMapping("/status")
+    public Result queryShopStatus(){
+        Integer status = shopService.queryShopStatus();
+        return Result.success(status);
     }
 }
