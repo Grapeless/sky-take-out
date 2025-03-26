@@ -1,6 +1,6 @@
 package com.lim.controller.user;
 
-import com.lim.Service.UserService;
+import com.lim.service.UserService;
 import com.lim.constant.JwtClaimsConstant;
 import com.lim.dto.UserLoginDTO;
 import com.lim.entity.User;

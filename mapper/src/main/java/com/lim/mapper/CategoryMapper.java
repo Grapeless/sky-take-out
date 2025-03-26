@@ -22,4 +22,6 @@ public interface CategoryMapper {
 
     @Select("select * from category where type = #{type}")
     List<Category> selectCategoryByType(Integer type);
+
+    List<Category> list(@Param("type") Integer type);
 }

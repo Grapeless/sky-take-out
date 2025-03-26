@@ -1,8 +1,8 @@
-package com.lim.Service.impl;
+package com.lim.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.lim.Service.SetMealService;
+import com.lim.service.SetMealService;
 import com.lim.constant.MessageConstant;
 import com.lim.dto.SetmealDTO;
 import com.lim.dto.SetmealPageQueryDTO;
@@ -13,6 +13,7 @@ import com.lim.mapper.DishMapper;
 import com.lim.mapper.SetMealDishMapper;
 import com.lim.mapper.SetMealMapper;
 import com.lim.result.PageResult;
+import com.lim.vo.DishItemVO;
 import com.lim.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -115,5 +116,15 @@ public class SetMealServiceImpl implements SetMealService {
 
         setMealMapper.deleteSetMealBySetMealIds(ids);
         setMealDishMapper.deleteSetMealDishBySetMealIds(ids);
+    }
+
+    public List<Setmeal> list(Setmeal setmeal) {
+        List<Setmeal> list = setMealMapper.list(setmeal);
+        return list;
+    }
+
+    @Override
+    public List<DishItemVO> getDishItemById(Long id) {
+        return setMealMapper.getDishItemBySetMealId(id);
     }
 }

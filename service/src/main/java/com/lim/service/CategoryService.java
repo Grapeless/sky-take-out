@@ -1,4 +1,4 @@
-package com.lim.Service;
+package com.lim.service;
 
 import com.lim.dto.CategoryDTO;
 import com.lim.dto.CategoryPageQueryDTO;
@@ -19,4 +19,6 @@ public interface CategoryService {
     void deleteCategory(Long id);
 
     List<Category> selectCategory(Integer type);
+
+    List<Category> list(Integer type);
 }

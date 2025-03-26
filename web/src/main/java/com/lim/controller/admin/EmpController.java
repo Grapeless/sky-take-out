@@ -1,6 +1,6 @@
 package com.lim.controller.admin;
 
-import com.lim.Service.EmpService;
+import com.lim.service.EmpService;
 import com.lim.constant.JwtClaimsConstant;
 import com.lim.dto.EmployeeDTO;
 import com.lim.dto.EmployeeLoginDTO;

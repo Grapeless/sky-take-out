@@ -1,20 +1,18 @@
-package com.lim.Service.impl;
+package com.lim.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.lim.Service.DishService;
+import com.lim.entity.DishFlavor;
+import com.lim.service.DishService;
 import com.lim.constant.MessageConstant;
 import com.lim.constant.StatusConstant;
 import com.lim.dto.DishDTO;
 import com.lim.dto.DishPageQueryDTO;
 import com.lim.entity.Dish;
-import com.lim.entity.DishFlavor;
 import com.lim.exception.DeletionNotAllowedException;
-import com.lim.exception.DishEnableFailedException;
 import com.lim.mapper.DishFlavorMapper;
 import com.lim.mapper.DishMapper;
 import com.lim.mapper.SetMealDishMapper;
-import com.lim.mapper.SetMealMapper;
 import com.lim.result.PageResult;
 import com.lim.vo.DishVO;
 import org.springframework.beans.BeanUtils;
@@ -126,5 +124,24 @@ public class DishServiceImpl implements DishService {
     @Override
     public List<Dish> selectDishByCategoryId(Long categoryId) {
         return dishMapper.selectDishByCategoryId(categoryId);
+    }
+
+    public List<DishVO> listWithFlavor(Dish dish) {
+        List<Dish> dishList = dishMapper.list(dish);
+
+        List<DishVO> dishVOList = new ArrayList<>();
+
+        for (Dish d : dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(d,dishVO);
+
+            //根据菜品id查询对应的口味
+            List<DishFlavor> flavors = dishFlavorMapper.selectDishFlavorByDishId(d.getId());
+
+            dishVO.setFlavors(flavors);
+            dishVOList.add(dishVO);
+        }
+
+        return dishVOList;
     }
 }

@@ -4,12 +4,10 @@ import com.lim.interceptor.JwtTokenAdminInterceptor;
 import com.lim.interceptor.JwtTokenUserInterceptor;
 import com.lim.json.JacksonObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -19,7 +17,6 @@ import java.util.List;
  */
 @Configuration
 @Slf4j
-
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
     private final JwtTokenAdminInterceptor jwtTokenAdminInterceptor;

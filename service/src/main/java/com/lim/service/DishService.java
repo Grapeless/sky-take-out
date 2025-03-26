@@ -1,4 +1,4 @@
-package com.lim.Service;
+package com.lim.service;
 
 import com.lim.dto.DishDTO;
 import com.lim.dto.DishPageQueryDTO;
@@ -22,4 +22,6 @@ public interface DishService {
     void updateDish(DishDTO dishDTO);
 
     List<Dish> selectDishByCategoryId(Long categoryId);
+
+    List<DishVO> listWithFlavor(Dish dish);
 }

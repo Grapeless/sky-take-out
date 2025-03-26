@@ -1,9 +1,9 @@
-package com.lim.Service.impl;
+package com.lim.service.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lim.Service.UserService;
+import com.lim.service.UserService;
 import com.lim.constant.MessageConstant;
 import com.lim.dto.UserLoginDTO;
 import com.lim.entity.User;

@@ -1,6 +1,6 @@
 package com.lim.controller.admin;
 
-import com.lim.Service.DishService;
+import com.lim.service.DishService;
 import com.lim.dto.DishDTO;
 import com.lim.dto.DishPageQueryDTO;
 import com.lim.entity.Dish;

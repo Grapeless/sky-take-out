@@ -1,8 +1,10 @@
-package com.lim.Service;
+package com.lim.service;
 
 import com.lim.dto.SetmealDTO;
 import com.lim.dto.SetmealPageQueryDTO;
+import com.lim.entity.Setmeal;
 import com.lim.result.PageResult;
+import com.lim.vo.DishItemVO;
 import com.lim.vo.SetmealVO;
 
 import java.util.List;
@@ -19,4 +21,8 @@ public interface SetMealService {
     void updateSetMealStatus(Integer status, Long id);
 
     void deleteSetMeal(List<Long> ids);
+
+    List<Setmeal> list(Setmeal setmeal);
+
+    List<DishItemVO> getDishItemById(Long id);
 }

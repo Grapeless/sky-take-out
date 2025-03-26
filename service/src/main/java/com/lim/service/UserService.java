@@ -1,4 +1,4 @@
-package com.lim.Service;
+package com.lim.service;
 
 import com.lim.dto.UserLoginDTO;
 import com.lim.entity.User;

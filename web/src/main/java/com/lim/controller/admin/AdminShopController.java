@@ -1,6 +1,6 @@
 package com.lim.controller.admin;
 
-import com.lim.Service.ShopService;
+import com.lim.service.ShopService;
 import com.lim.result.Result;
 import org.springframework.web.bind.annotation.*;
 

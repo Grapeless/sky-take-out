@@ -1,8 +1,8 @@
-package com.lim.Service.impl;
+package com.lim.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.lim.Service.CategoryService;
+import com.lim.service.CategoryService;
 import com.lim.dto.CategoryDTO;
 import com.lim.dto.CategoryPageQueryDTO;
 import com.lim.entity.Category;
@@ -81,4 +81,10 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> selectCategory(Integer type) {
         return categoryMapper.selectCategoryByType(type);
     }
+
+    @Override
+    public List<Category> list(Integer type) {
+        return categoryMapper.list(type);
+    }
+
 }

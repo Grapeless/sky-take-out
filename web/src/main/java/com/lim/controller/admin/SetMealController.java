@@ -1,6 +1,6 @@
 package com.lim.controller.admin;
 
-import com.lim.Service.SetMealService;
+import com.lim.service.SetMealService;
 import com.lim.dto.SetmealDTO;
 import com.lim.dto.SetmealPageQueryDTO;
 import com.lim.result.PageResult;

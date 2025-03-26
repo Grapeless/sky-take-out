@@ -1,7 +1,6 @@
-package com.lim.Service.impl;
+package com.lim.service.impl;
 
-import com.lim.Service.ShopService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lim.service.ShopService;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 

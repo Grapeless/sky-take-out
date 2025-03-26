@@ -1,6 +1,6 @@
 package com.lim.controller.admin;
 
-import com.lim.Service.CategoryService;
+import com.lim.service.CategoryService;
 import com.lim.dto.CategoryDTO;
 import com.lim.dto.CategoryPageQueryDTO;
 import com.lim.entity.Category;
