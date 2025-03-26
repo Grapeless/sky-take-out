@@ -16,6 +16,8 @@ import com.lim.result.PageResult;
 import com.lim.vo.DishItemVO;
 import com.lim.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +28,7 @@ public class SetMealServiceImpl implements SetMealService {
     private final SetMealMapper setMealMapper;
     private final SetMealDishMapper setMealDishMapper;
     private final DishMapper dishMapper;
+    private final static String KEY_PREFIX = "SetMeal";
 
     public SetMealServiceImpl(SetMealMapper setMealMapper, SetMealDishMapper setMealDishMapper, DishMapper dishMapper) {
         this.setMealMapper = setMealMapper;
@@ -48,6 +51,7 @@ public class SetMealServiceImpl implements SetMealService {
 
     @Transactional
     @Override
+    @CacheEvict(cacheNames = KEY_PREFIX, key = "#setmealDTO.categoryId")
     public void save(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
@@ -70,6 +74,7 @@ public class SetMealServiceImpl implements SetMealService {
 
     @Transactional
     @Override
+    @CacheEvict(cacheNames = KEY_PREFIX, allEntries = true)
     public void updateSetMeal(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
@@ -85,6 +90,7 @@ public class SetMealServiceImpl implements SetMealService {
     }
 
     @Override
+    @CacheEvict(cacheNames = KEY_PREFIX, allEntries = true)
     public void updateSetMealStatus(Integer status, Long id) {
         //若套餐内包含未启售菜品，则无法启售
         //只切换为启售状态时
@@ -106,6 +112,7 @@ public class SetMealServiceImpl implements SetMealService {
 
     @Transactional
     @Override
+    @CacheEvict(cacheNames = KEY_PREFIX, allEntries = true)
     public void deleteSetMeal(List<Long> ids) {
         //套餐若处于起售中，则无法删除
         setMealMapper.selectSetMealByIds(ids).forEach(setmeal -> {
@@ -118,9 +125,9 @@ public class SetMealServiceImpl implements SetMealService {
         setMealDishMapper.deleteSetMealDishBySetMealIds(ids);
     }
 
+    @CachePut(cacheNames = KEY_PREFIX, key = "#setmeal.categoryId")
     public List<Setmeal> list(Setmeal setmeal) {
-        List<Setmeal> list = setMealMapper.list(setmeal);
-        return list;
+        return setMealMapper.list(setmeal);
     }
 
     @Override
