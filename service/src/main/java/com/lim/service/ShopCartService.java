@@ -10,5 +10,7 @@ public interface ShopCartService {
 
     List<ShoppingCart> selectAll();
 
-    void deleteAll();
+    void deleteByUserId();
+
+    void sub(ShoppingCartDTO shoppingCartDTO);
 }

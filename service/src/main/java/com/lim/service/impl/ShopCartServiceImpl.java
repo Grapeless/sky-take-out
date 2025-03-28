@@ -41,7 +41,7 @@ public class ShopCartServiceImpl implements ShopCartService {
             ShoppingCart cart = shoppingCarts.get(0);
             cart.setNumber(cart.getNumber() + 1);
             shopCartMapper.updateNumber(cart);
-        }else {
+        } else {
             //购物车中不存在
             Long dishId = shoppingCart.getDishId();
             if (dishId != null) {
@@ -50,9 +50,9 @@ public class ShopCartServiceImpl implements ShopCartService {
                 shoppingCart.setName(dish.getName());
                 shoppingCart.setImage(dish.getImage());
                 shoppingCart.setAmount(dish.getPrice());
-            }else {
+            } else {
                 //准备向购物车中增加一个套餐
-                Long setMealId= shoppingCart.getSetmealId();
+                Long setMealId = shoppingCart.getSetmealId();
                 Setmeal setmeal = setMealMapper.selectSetMealByIds(List.of(setMealId)).get(0);
                 shoppingCart.setName(setmeal.getName());
                 shoppingCart.setImage(setmeal.getImage());
@@ -71,8 +71,30 @@ public class ShopCartServiceImpl implements ShopCartService {
     }
 
     @Override
-    public void deleteAll() {
-        ShoppingCart shoppingCart = ShoppingCart.builder().userId(BaseContext.getCurrentId()).build();
-        shopCartMapper.deleteAll(shoppingCart);
+    public void deleteByUserId() {
+        shopCartMapper.deleteByUserId(BaseContext.getCurrentId());
+    }
+
+    @Override
+    public void sub(ShoppingCartDTO shoppingCartDTO) {
+        //获得要要减少数量的物品现有数量
+        ShoppingCart shoppingCart = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
+        shoppingCart.setUserId(BaseContext.getCurrentId());
+        List<ShoppingCart> shoppingCarts = shopCartMapper.selectShoppingCart(shoppingCart);
+        ShoppingCart item = shoppingCarts.get(0);
+        //这里number >= 1,shopCartId必存在
+        int number = item.getNumber();
+        Long shopCartId = item.getId();
+
+        //number == 1,直接删除
+        if (number == 1) {
+            shopCartMapper.deleteByShopCartId(shopCartId);
+            return;
+        }
+        //number > 1,对应物品数量减1
+        item.setNumber(item.getNumber() - 1);
+        shopCartMapper.updateNumber(item);
+
     }
 }

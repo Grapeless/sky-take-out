@@ -2,7 +2,6 @@ package com.lim.mapper;
 
 import com.lim.entity.ShoppingCart;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -10,7 +9,7 @@ import java.util.List;
 public interface ShopCartMapper {
 
     /**
-     * 根据setMealId,dishId,dishFlavor查询ShoppingCart对象
+     * 根据setMealId/dishId,dishFlavor查询ShoppingCart对象
      */
     List<ShoppingCart> selectShoppingCart(ShoppingCart shoppingCart);
 
@@ -34,8 +33,14 @@ public interface ShopCartMapper {
     List<ShoppingCart> selectAll(ShoppingCart shoppingCart);
 
     /**
-     *
-     * @param shoppingCart
+     * 删除所有
+     * @param userId 要删除哪个用户的购物车数据
      */
-    void deleteAll(ShoppingCart shoppingCart);
+    void deleteByUserId(Long userId);
+
+    /**
+     * 根据shopping_cart.id删除
+     * @param shopCartId shopping_cart.id
+     */
+    void deleteByShopCartId(Long shopCartId);
 }

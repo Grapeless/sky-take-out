@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * The type Shop cart controller.
+ */
 @RestController
 @RequestMapping("/user/shoppingCart")
 public class ShopCartController {
@@ -32,7 +35,14 @@ public class ShopCartController {
 
     @DeleteMapping("/clean")
     public Result deleteAll(){
-        shopCartService.deleteAll();
+        shopCartService.deleteByUserId();
         return Result.success();
     }
+
+    @PostMapping("/sub")
+    public Result sub(@RequestBody ShoppingCartDTO shoppingCartDTO){
+        shopCartService.sub(shoppingCartDTO);
+        return Result.success();
+    }
+
 }
